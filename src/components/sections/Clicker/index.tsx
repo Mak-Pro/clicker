@@ -26,15 +26,17 @@ export const Clicker = () => {
     setScore((prevScore) => prevScore + event.changedTouches.length);
   };
 
-  // const handleTouchMove = (event) => {
-  //   const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map((touch) => ({
-  //     id: touch.identifier,
-  //     x: touch.clientX,
-  //     y: touch.clientY,
-  //   }));
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+      (touch) => ({
+        id: touch.identifier,
+        x: touch.clientX,
+        y: touch.clientY,
+      })
+    );
 
-  //   setTouchPoints(updatedTouchPoints);
-  // };
+    setTouchPoints(updatedTouchPoints as any);
+  };
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     const remainingTouchPoints: TouchPoint[] = Array.from(event.touches).map(
@@ -52,7 +54,7 @@ export const Clicker = () => {
     <div
       className={styles.clicker}
       onTouchStart={handleTouchStart}
-      // onTouchMove={handleTouchMove}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       <h1>Очки: {score}</h1>
