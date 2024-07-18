@@ -15,7 +15,7 @@ export const Clicker = () => {
   const [visiblePoints, setVisiblePoints] = useState<TouchPoint[]>([]);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    const newTouchPoints: TouchPoint[] = Array.from(event.changedTouches).map(
+    const newTouchPoints: any = Array.from(event.changedTouches).map(
       (touch) => ({
         id: `${touch.identifier}-${Date.now()}`,
         x: touch.clientX,
@@ -31,7 +31,9 @@ export const Clicker = () => {
       setTouchPoints((prevPoints) =>
         prevPoints.filter(
           (point) =>
-            !newTouchPoints.some((newPoint) => newPoint.id === point.id)
+            !newTouchPoints.some(
+              (newPoint: TouchPoint) => newPoint.id === point.id
+            )
         )
       );
     }, 1100);
