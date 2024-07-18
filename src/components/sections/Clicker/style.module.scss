@@ -82,10 +82,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+
+      &_disabled {
+        filter: grayscale(1);
+        pointer-events: none;
+      }
 
       img {
         margin-left: -20px;
+        margin-top: -10%;
+        animation: Pulse 3s ease-in-out infinite;
       }
     }
   }
@@ -102,6 +108,7 @@
     &__top {
       display: flex;
       align-items: center;
+      gap: 0 20px;
     }
   }
 
@@ -119,6 +126,7 @@
       padding: 5px;
       position: relative;
       z-index: 1;
+      min-width: 80px;
 
       &_text {
         display: inline-flex;
@@ -132,7 +140,7 @@
       position: relative;
       height: 20px;
       border-radius: 20px;
-      width: 200px;
+      flex: 1;
       background-color: #fff;
       border: 2px solid #3585fe;
       margin-left: -20px;
@@ -181,5 +189,17 @@
   100% {
     opacity: 0;
     transform: translateY(-30px);
+  }
+}
+
+@keyframes Pulse {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }

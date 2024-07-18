@@ -20,6 +20,7 @@ export const Clicker = () => {
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
   const [animateImage, setAnimateImage] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(1000);
+  const [end, setEnd] = useState(false);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const newTouchPoints: any = Array.from(event.changedTouches).map(
@@ -36,6 +37,8 @@ export const Clicker = () => {
     setCounter((prevCounter) =>
       Math.max(prevCounter - event.changedTouches.length, 0)
     );
+
+    dayScore <= 1 && setEnd(true);
 
     // Trigger image animation
     setAnimateImage(true);
@@ -88,8 +91,10 @@ export const Clicker = () => {
       </div>
       <div className={styles.clicker__action}>
         <div
-          className={styles.clicker__action_hero}
-          onTouchStart={handleTouchStart}
+          className={`${styles.clicker__action_hero} ${
+            end ? styles.clicker__action_hero_disabled : ""
+          }`}
+          onTouchStart={!end ? handleTouchStart : () => {}}
         >
           <motion.img
             src="/images/emojinn.png"
@@ -133,7 +138,9 @@ export const Clicker = () => {
               </div>
             </div>
             <div className={styles.clicker__progress_bar}>
-              <span></span>
+              <span
+                style={{ width: `${(dayScore / totalScore) * 100}%` }}
+              ></span>
             </div>
           </div>
           <div className={styles.clicker__energy}>
