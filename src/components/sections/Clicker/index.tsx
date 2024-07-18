@@ -10,7 +10,7 @@ interface TouchPoint {
   y: number;
 }
 
-const totalScore = 5000;
+const totalScore = 500;
 const totalEnergy = 1000;
 
 export const Clicker = () => {
@@ -96,12 +96,14 @@ export const Clicker = () => {
           }`}
           onTouchStart={!end ? handleTouchStart : () => {}}
         >
-          <motion.img
-            src="/images/emojinn.png"
-            alt="emojinn"
-            animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
-            transition={{ duration: 0.3 }}
-          />
+          <div className={styles.clicker__action_hero_inner}>
+            <motion.img
+              src="/images/emojinn.png"
+              alt="emojinn"
+              animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
         </div>
         <AnimatePresence>
           {touchPoints.map((touch: TouchPoint) => (

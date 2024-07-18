@@ -82,22 +82,28 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
 
       &_disabled {
         filter: grayscale(1);
         pointer-events: none;
       }
 
+      &_inner {
+        animation: Pulse 4s ease-in-out infinite;
+      }
+
       img {
         margin-left: -20px;
-        margin-top: -10%;
-        animation: Pulse 3s ease-in-out infinite;
+        margin-top: -5%;
       }
     }
   }
 
   &__footer {
-    position: absolute;
+    position: fixed;
+    width: 100%;
+    max-width: $maxWidth;
     bottom: 0;
     left: 0;
     right: 0;
@@ -197,7 +203,7 @@
     transform: translateY(0%);
   }
   50% {
-    transform: translateY(10%);
+    transform: translateY(5%);
   }
   100% {
     transform: translateY(0%);
