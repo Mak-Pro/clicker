@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTelegram } from "@/providers/telegram";
 import styles from "./style.module.scss";
 
 interface TouchPoint {
@@ -14,6 +15,7 @@ const totalScore = 500;
 const totalEnergy = 1000;
 
 export const Clicker = () => {
+  const { webApp } = useTelegram();
   const [score, setScore] = useState(0);
   const [dayScore, setDayScore] = useState(totalScore);
   const [energy, setEnergy] = useState(totalEnergy);
@@ -57,6 +59,39 @@ export const Clicker = () => {
   };
 
   useEffect(() => {
+    webApp?.ready();
+
+    if (typeof window !== undefined) {
+      const overflow = 100;
+      document.body.style.overflowY = "hidden";
+      document.body.style.marginTop = `${overflow}px`;
+      document.body.style.height = window.innerHeight + overflow + "px";
+      document.body.style.paddingBottom = `${overflow}px`;
+      window.scrollTo(0, overflow);
+
+      let ts: number | undefined;
+      const onTouchStart = (e: TouchEvent) => {
+        ts = e.touches[0].clientY;
+      };
+      // const onTouchMove = (e: TouchEvent) => {
+      //   if (scrollableEl) {
+      //     const scroll = scrollableEl.scrollTop;
+      //     const te = e.changedTouches[0].clientY;
+      //     if (scroll <= 0 && ts! < te) {
+      //       e.preventDefault();
+      //     }
+      //   } else {
+      //     e.preventDefault();
+      //   }
+      // };
+      document.documentElement.addEventListener("touchstart", onTouchStart, {
+        passive: false,
+      });
+      // document.documentElement.addEventListener("touchmove", onTouchMove, {
+      //   passive: false,
+      // });
+    }
+
     const interval = setInterval(() => {
       setCounter((prevCounter) =>
         prevCounter < 1000 ? prevCounter + 1 : prevCounter
