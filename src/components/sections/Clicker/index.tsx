@@ -1,5 +1,5 @@
 "use client";
-import { useState, TouchEvent } from "react";
+import { useState, useEffect, TouchEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./style.module.scss";
 
@@ -11,51 +11,76 @@ interface TouchPoint {
 
 export const Clicker = () => {
   const [score, setScore] = useState(0);
-  const [touchPoints, setTouchPoints] = useState([]);
+  const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
+  const [visiblePoints, setVisiblePoints] = useState<TouchPoint[]>([]);
 
-  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
-    const newTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const newTouchPoints: TouchPoint[] = Array.from(event.changedTouches).map(
       (touch) => ({
-        id: touch.identifier,
+        id: `${touch.identifier}-${Date.now()}`,
         x: touch.clientX,
         y: touch.clientY,
       })
     );
 
-    setTouchPoints(newTouchPoints as any);
+    setTouchPoints((prevPoints) => [...prevPoints, ...newTouchPoints]);
     setScore((prevScore) => prevScore + event.changedTouches.length);
+
+    // Remove touch points after animation
+    setTimeout(() => {
+      setTouchPoints((prevPoints) =>
+        prevPoints.filter(
+          (point) =>
+            !newTouchPoints.some((newPoint) => newPoint.id === point.id)
+        )
+      );
+    }, 1100);
   };
 
-  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map(
-      (touch) => ({
-        id: touch.identifier,
-        x: touch.clientX,
-        y: touch.clientY,
-      })
-    );
+  // const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+  //   const newTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+  //     (touch) => ({
+  //       id: touch.identifier,
+  //       x: touch.clientX,
+  //       y: touch.clientY,
+  //     })
+  //   );
 
-    setTouchPoints(updatedTouchPoints as any);
-  };
+  //   setTouchPoints(newTouchPoints as any);
+  //   setScore((prevScore) => prevScore + event.changedTouches.length);
+  // };
 
-  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
-    const remainingTouchPoints: TouchPoint[] = Array.from(event.touches).map(
-      (touch) => ({
-        id: touch.identifier,
-        x: touch.clientX,
-        y: touch.clientY,
-      })
-    );
+  // const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+  //   const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+  //     (touch) => ({
+  //       id: touch.identifier,
+  //       x: touch.clientX,
+  //       y: touch.clientY,
+  //     })
+  //   );
 
-    setTouchPoints(remainingTouchPoints as any);
-  };
+  //   setTouchPoints(updatedTouchPoints as any);
+  // };
+
+  // const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+  //   const remainingTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+  //     (touch) => ({
+  //       id: touch.identifier,
+  //       x: touch.clientX,
+  //       y: touch.clientY,
+  //     })
+  //   );
+
+  //   setTouchPoints(remainingTouchPoints as any);
+  // };
 
   return (
     <div
       className={styles.clicker}
       onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      // onTouchMove={handleTouchMove}
+      // onTouchEnd={handleTouchEnd}
+      // onTouchEnd={handleTouchStart}
     >
       <h1>Очки: {score}</h1>
       <p>
