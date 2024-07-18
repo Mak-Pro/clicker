@@ -1,5 +1,6 @@
 "use client";
 import { useState, TouchEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./style.module.scss";
 
 interface TouchPoint {
@@ -59,18 +60,24 @@ export const Clicker = () => {
         Тапайте по экрану несколькими пальцами одновременно, чтобы увеличить
         счёт!
       </p>
-      {touchPoints.map((touch: TouchPoint) => (
-        <div
-          key={touch.id}
-          className={styles.touchpoint}
-          style={{
-            left: touch.x,
-            top: touch.y,
-          }}
-        >
-          +1
-        </div>
-      ))}
+      <AnimatePresence>
+        {touchPoints.map((touch: TouchPoint) => (
+          <motion.div
+            key={touch.id}
+            className={styles.touchpoint}
+            style={{
+              left: touch.x,
+              top: touch.y,
+            }}
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 0, y: -50 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            +1
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

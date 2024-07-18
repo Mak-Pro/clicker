@@ -24,4 +24,19 @@
   border-radius: 50%;
   font-size: 16px;
   pointer-events: none;
+  animation: Point 0.5s ease forwards;
+}
+
+@keyframes Point {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 }
