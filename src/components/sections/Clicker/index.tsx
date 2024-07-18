@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect, TouchEvent } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./style.module.scss";
 
@@ -9,10 +10,16 @@ interface TouchPoint {
   y: number;
 }
 
+const totalScore = 5000;
+const totalEnergy = 1000;
+
 export const Clicker = () => {
   const [score, setScore] = useState(0);
+  const [dayScore, setDayScore] = useState(totalScore);
+  const [energy, setEnergy] = useState(totalEnergy);
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
-  const [visiblePoints, setVisiblePoints] = useState<TouchPoint[]>([]);
+  const [animateImage, setAnimateImage] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(1000);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const newTouchPoints: any = Array.from(event.changedTouches).map(
@@ -22,11 +29,18 @@ export const Clicker = () => {
         y: touch.clientY,
       })
     );
-
+    setDayScore((prevScore) => prevScore - newTouchPoints.length);
+    setEnergy((prevEnergy) => prevEnergy - newTouchPoints.length);
     setTouchPoints((prevPoints) => [...prevPoints, ...newTouchPoints]);
     setScore((prevScore) => prevScore + event.changedTouches.length);
+    setCounter((prevCounter) =>
+      Math.max(prevCounter - event.changedTouches.length, 0)
+    );
 
-    // Remove touch points after animation
+    // Trigger image animation
+    setAnimateImage(true);
+    setTimeout(() => setAnimateImage(false), 50); // Duration of the animation
+
     setTimeout(() => {
       setTouchPoints((prevPoints) =>
         prevPoints.filter(
@@ -39,74 +53,103 @@ export const Clicker = () => {
     }, 1100);
   };
 
-  // const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
-  //   const newTouchPoints: TouchPoint[] = Array.from(event.touches).map(
-  //     (touch) => ({
-  //       id: touch.identifier,
-  //       x: touch.clientX,
-  //       y: touch.clientY,
-  //     })
-  //   );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter((prevCounter) =>
+        prevCounter < 1000 ? prevCounter + 1 : prevCounter
+      );
+    }, 500);
 
-  //   setTouchPoints(newTouchPoints as any);
-  //   setScore((prevScore) => prevScore + event.changedTouches.length);
-  // };
-
-  // const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-  //   const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map(
-  //     (touch) => ({
-  //       id: touch.identifier,
-  //       x: touch.clientX,
-  //       y: touch.clientY,
-  //     })
-  //   );
-
-  //   setTouchPoints(updatedTouchPoints as any);
-  // };
-
-  // const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
-  //   const remainingTouchPoints: TouchPoint[] = Array.from(event.touches).map(
-  //     (touch) => ({
-  //       id: touch.identifier,
-  //       x: touch.clientX,
-  //       y: touch.clientY,
-  //     })
-  //   );
-
-  //   setTouchPoints(remainingTouchPoints as any);
-  // };
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div
-      className={styles.clicker}
-      onTouchStart={handleTouchStart}
-      // onTouchMove={handleTouchMove}
-      // onTouchEnd={handleTouchEnd}
-      // onTouchEnd={handleTouchStart}
-    >
-      <h1>Очки: {score}</h1>
-      <p>
-        Тапайте по экрану несколькими пальцами одновременно, чтобы увеличить
-        счёт!
-      </p>
-      <AnimatePresence>
-        {touchPoints.map((touch: TouchPoint) => (
-          <motion.div
-            key={touch.id}
-            className={styles.touchpoint}
-            style={{
-              left: touch.x,
-              top: touch.y,
-            }}
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 0, y: -50 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            +1
-          </motion.div>
-        ))}
-      </AnimatePresence>
+    <div className={styles.clicker}>
+      <div className={styles.clicker__topbar}>
+        <div className={styles.clicker__topbar_note}>
+          <Image
+            src="/images/coin-score.webp"
+            width={30}
+            height={30}
+            alt="score"
+          />{" "}
+          1 Djinny Token
+        </div>
+        <div className={styles.clicker__topbar_gift}>+500.000</div>
+      </div>
+      <div className={styles.clicker__scores}>
+        <Image
+          src="/images/coin-score.webp"
+          width={30}
+          height={30}
+          alt="score"
+        />
+        <span>{score}</span>
+      </div>
+      <div className={styles.clicker__action}>
+        <div
+          className={styles.clicker__action_hero}
+          onTouchStart={handleTouchStart}
+        >
+          <motion.img
+            src="/images/emojinn.png"
+            alt="emojinn"
+            animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+        <AnimatePresence>
+          {touchPoints.map((touch: TouchPoint) => (
+            <motion.div
+              key={touch.id}
+              className={styles.clicker__action_point}
+              style={{
+                left: touch.x,
+                top: touch.y,
+              }}
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 0, y: -50 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              1
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+      <div className={styles.clicker__footer}>
+        <div className={styles.clicker__footer__top}>
+          <div className={styles.clicker__progress}>
+            <div className={styles.clicker__progress_stats}>
+              <Image
+                src="/images/heart.svg"
+                width={30}
+                height={30}
+                alt="score"
+              />
+              <div className={styles.clicker__progress_stats_text}>
+                <span>{dayScore}</span>
+                <i>{totalScore}</i>
+              </div>
+            </div>
+            <div className={styles.clicker__progress_bar}>
+              <span></span>
+            </div>
+          </div>
+          <div className={styles.clicker__energy}>
+            <Image
+              src="/images/energy.svg"
+              width={40}
+              height={40}
+              alt="score"
+            />
+            <div className={styles.clicker__energy_text}>
+              <span>{counter}</span>
+              <i>/{totalEnergy}</i>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
