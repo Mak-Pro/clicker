@@ -1,70 +1,57 @@
 "use client";
-import { useState } from "react";
+import { useState, TouchEvent } from "react";
 import styles from "./style.module.scss";
+
+interface TouchPoint {
+  id: number;
+  x: number;
+  y: number;
+}
 
 export const Clicker = () => {
   const [score, setScore] = useState(0);
   const [touchPoints, setTouchPoints] = useState([]);
 
-  const handleTouchStart = (event) => {
-    const newTouchPoints = Array.from(event.touches).map((touch) => ({
-      id: touch.identifier,
-      x: touch.clientX,
-      y: touch.clientY,
-    }));
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    const newTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+      (touch) => ({
+        id: touch.identifier,
+        x: touch.clientX,
+        y: touch.clientY,
+      })
+    );
 
-    setTouchPoints(newTouchPoints);
+    setTouchPoints(newTouchPoints as any);
     setScore((prevScore) => prevScore + event.changedTouches.length);
   };
 
-  const handleTouchMove = (event) => {
-    const updatedTouchPoints = Array.from(event.touches).map((touch) => ({
-      id: touch.identifier,
-      x: touch.clientX,
-      y: touch.clientY,
-    }));
+  // const handleTouchMove = (event) => {
+  //   const updatedTouchPoints: TouchPoint[] = Array.from(event.touches).map((touch) => ({
+  //     id: touch.identifier,
+  //     x: touch.clientX,
+  //     y: touch.clientY,
+  //   }));
 
-    setTouchPoints(updatedTouchPoints);
-  };
+  //   setTouchPoints(updatedTouchPoints);
+  // };
 
-  const handleTouchEnd = (event) => {
-    const remainingTouchPoints = Array.from(event.touches).map((touch) => ({
-      id: touch.identifier,
-      x: touch.clientX,
-      y: touch.clientY,
-    }));
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const remainingTouchPoints: TouchPoint[] = Array.from(event.touches).map(
+      (touch) => ({
+        id: touch.identifier,
+        x: touch.clientX,
+        y: touch.clientY,
+      })
+    );
 
-    setTouchPoints(remainingTouchPoints);
-  };
-
-  const styles = {
-    container: {
-      position: "relative",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
-      backgroundColor: "#f0f0f0",
-      userSelect: "none",
-      touchAction: "manipulation",
-    },
-    touchPoint: {
-      position: "absolute",
-      backgroundColor: "rgba(0, 150, 0, 0.7)",
-      color: "white",
-      padding: "5px",
-      borderRadius: "50%",
-      fontSize: "16px",
-      pointerEvents: "none",
-    },
+    setTouchPoints(remainingTouchPoints as any);
   };
 
   return (
     <div
-      style={styles.container}
+      className={styles.clicker}
       onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
+      // onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       <h1>Очки: {score}</h1>
@@ -72,11 +59,11 @@ export const Clicker = () => {
         Тапайте по экрану несколькими пальцами одновременно, чтобы увеличить
         счёт!
       </p>
-      {touchPoints.map((touch) => (
+      {touchPoints.map((touch: TouchPoint) => (
         <div
           key={touch.id}
+          className={styles.touchpoint}
           style={{
-            ...styles.touchPoint,
             left: touch.x,
             top: touch.y,
           }}
