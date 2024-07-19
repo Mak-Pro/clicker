@@ -17,7 +17,7 @@ export const InfoBox = ({
       <Image src={icon} width={32} height={32} alt={description} />
       <div className={styles.infobox__stats}>
         <div className={styles.infobox__points}>
-          <span>{current}</span>
+          <span>{new Intl.NumberFormat("en-IN").format(current)}</span>
           <i>/{total}</i>
         </div>
         <div className={styles.infobox__note}>{description}</div>
