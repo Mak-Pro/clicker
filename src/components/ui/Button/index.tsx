@@ -102,7 +102,7 @@ export const Button = ({
         color:
           variant === "outlined" || variant === "text"
             ? color
-            : cssVariables.white,
+            : cssVariables.black,
         backgroundColor: variant === "filled" ? color : "transparent",
         borderColor:
           variant === "outlined" || variant === "filled"

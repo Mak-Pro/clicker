@@ -3,7 +3,14 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTelegram } from "@/providers/telegram";
+import Lottie from "lottie-react";
+import { InfoBox, Navigation } from "@/components";
+import startAnimation from "@/assets/json/start.json";
+import finishAnimation from "@/assets/json/finish.json";
+import idleAnimation from "@/assets/json/idle.json";
+import idleTapAnimation from "@/assets/json/idle-taping.json";
 import styles from "./style.module.scss";
+import { cssVariables } from "@/assets/styles/variables";
 
 interface TouchPoint {
   id: number;
@@ -11,7 +18,7 @@ interface TouchPoint {
   y: number;
 }
 
-const totalScore = 500;
+const totalScore = 5000;
 const totalEnergy = 1000;
 
 export const Clicker = () => {
@@ -96,104 +103,113 @@ export const Clicker = () => {
       setCounter((prevCounter) =>
         prevCounter < 1000 ? prevCounter + 1 : prevCounter
       );
-    }, 500);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className={styles.clicker}>
-      <div className={styles.clicker__topbar}>
-        <div className={styles.clicker__topbar_note}>
-          <Image
-            src="/images/coin-score.webp"
-            width={30}
-            height={30}
-            alt="score"
-          />{" "}
-          1 Djinny Token
-        </div>
-        <div className={styles.clicker__topbar_gift}>+500.000</div>
-      </div>
-      <div className={styles.clicker__scores}>
-        <Image
-          src="/images/coin-score.webp"
-          width={30}
-          height={30}
-          alt="score"
-        />
-        <span>{score}</span>
-      </div>
-      <div className={styles.clicker__action}>
-        <div
-          className={`${styles.clicker__action_hero} ${
-            end ? styles.clicker__action_hero_disabled : ""
-          }`}
-          onTouchStart={!end ? handleTouchStart : () => {}}
-        >
-          <div className={styles.clicker__action_hero_inner}>
-            <motion.img
-              src="/images/emojinn.png"
-              alt="emojinn"
-              animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
-        </div>
-        <AnimatePresence>
-          {touchPoints.map((touch: TouchPoint) => (
-            <motion.div
-              key={touch.id}
-              className={styles.clicker__action_point}
-              style={{
-                left: touch.x,
-                top: touch.y,
-              }}
-              initial={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 0, y: -50 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-            >
-              1
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-      <div className={styles.clicker__footer}>
-        <div className={styles.clicker__footer__top}>
-          <div className={styles.clicker__progress}>
-            <div className={styles.clicker__progress_stats}>
-              <Image
-                src="/images/heart.svg"
-                width={30}
-                height={30}
-                alt="score"
-              />
-              <div className={styles.clicker__progress_stats_text}>
-                <span>{dayScore}</span>
-                <i>{totalScore}</i>
-              </div>
-            </div>
-            <div className={styles.clicker__progress_bar}>
-              <span
-                style={{ width: `${(dayScore / totalScore) * 100}%` }}
-              ></span>
-            </div>
-          </div>
-          <div className={styles.clicker__energy}>
+    <>
+      <div className={styles.clicker}>
+        <div className={styles.clicker__topbar}>
+          <div className={styles.clicker__topbar_avatar}>
             <Image
-              src="/images/energy.svg"
-              width={40}
-              height={40}
-              alt="score"
+              src="/images/avatar.svg"
+              width={50}
+              height={66.3}
+              alt="jinn"
+            />{" "}
+            <span>Emojinn</span>
+          </div>
+          <div className={styles.clicker__topbar_level}>
+            <Image
+              src={`/icons/level-${1}.svg`}
+              width={30}
+              height={30}
+              alt="level"
             />
-            <div className={styles.clicker__energy_text}>
-              <span>{counter}</span>
-              <i>/{totalEnergy}</i>
+            Level 1
+          </div>
+        </div>
+        <div className={styles.clicker__scores}>
+          <Image src="/icons/coin.svg" width={48} height={48} alt="score" />
+          <span>{score} Coins</span>
+        </div>
+        <div className={styles.clicker__action}>
+          <div
+            className={`${styles.clicker__action_hero} ${
+              end ? styles.clicker__action_hero_disabled : ""
+            }`}
+            onTouchStart={!end ? handleTouchStart : () => {}}
+          >
+            <div className={styles.clicker__action_hero_inner}>
+              <motion.img
+                src="/images/jinn.svg"
+                alt="emojinn"
+                animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
+                transition={{ duration: 0.3 }}
+              />
             </div>
+          </div>
+          <AnimatePresence>
+            {touchPoints.map((touch: TouchPoint) => (
+              <motion.div
+                key={touch.id}
+                className={styles.clicker__action_point}
+                style={{
+                  left: touch.x,
+                  top: touch.y,
+                }}
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0, y: -50 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                1
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+        <div className={styles.clicker__footer}>
+          <div className={styles.clicker__footer__top}>
+            <InfoBox
+              icon="/icons/lamp.svg"
+              counter={{ current: dayScore, total: totalScore }}
+              description="Lamp Upgrade"
+              bgColor={cssVariables.purple}
+            />
+            <InfoBox
+              icon="/icons/mana.svg"
+              counter={{ current: counter, total: totalEnergy }}
+              description="Mana"
+              bgColor={cssVariables.yellow}
+            />
+          </div>
+          <div className={styles.clicker__footer__bottom}>
+            <Navigation />
           </div>
         </div>
       </div>
-    </div>
+      {/* <Lottie
+        animationData={startAnimation}
+        className={styles.clicker__start_animation}
+        loop={true}
+      />
+      <Lottie
+        animationData={finishAnimation}
+        className={styles.clicker__finish_animation}
+        loop={true}
+      />
+      <Lottie
+        animationData={idleAnimation}
+        className={styles.clicker__finish_animation}
+        loop={true}
+      />
+      <Lottie
+        animationData={idleTapAnimation}
+        className={styles.clicker__finish_animation}
+        loop={true}
+      /> */}
+    </>
   );
 };

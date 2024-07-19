@@ -16,3 +16,13 @@ export interface ButtonProps {
   reset?: boolean;
   submit?: boolean;
 }
+
+export interface InfoBoxProps {
+  icon: string;
+  counter: {
+    current: number;
+    total: number;
+  };
+  description: string;
+  bgColor?: string;
+}

@@ -1,0 +1,141 @@
+.invite {
+  display: flex;
+  flex-direction: column;
+  height: $tgViewportHeight;
+  background-color: $purple;
+  overflow: hidden;
+  padding: 0 $containerGlobalPadding;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    gap: 0 10px;
+    padding: 40px 0 25px;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 0 8px;
+    padding: $containerGlobalPadding 0;
+
+    button {
+      &:nth-child(1) {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.levels {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header {
+    background-color: $white;
+    border: 1px solid $black;
+    border-radius: 20px;
+    padding: 15px;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: calc(100% - 25px);
+      height: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -7px;
+      background-color: $white;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: block;
+      left: 10px;
+      bottom: -3px;
+      width: 4px;
+      height: 4px;
+      transform: rotate(-90deg);
+      border: 1px solid $black;
+      border-top: 0;
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+      z-index: 2;
+    }
+
+    h2 {
+      font-weight: 900;
+      margin-bottom: 5px;
+      span {
+        display: block;
+        color: #8194ff;
+      }
+    }
+  }
+
+  &__body {
+    position: relative;
+    background-color: $white;
+    border: 1px solid $black;
+    border-radius: 20px;
+    flex: 1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: block;
+      right: 10px;
+      top: -3px;
+      width: 4px;
+      height: 4px;
+      transform: rotate(-90deg);
+      border: 1px solid $black;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      border-bottom: 0;
+      z-index: 2;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &_item {
+      border-bottom: 1px solid $black;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      flex: 1;
+
+      &_type {
+        display: inline-flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        gap: 0 8px;
+      }
+
+      &_points {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      &:last-child {
+        border: 0 none;
+      }
+    }
+  }
+}

@@ -20,8 +20,13 @@ export const TelegramTheme = Object.freeze({
 });
 
 export const cssVariables = Object.freeze({
-  // ccolors
+  // colors
   white: variables.white,
+  black: variables.black,
+  green: variables.green,
+  purple: variables.purple,
+  yellow: variables.yellow,
+  blue: variables.blue,
 
   // layout
   containerGlobalPadding: variables.containerGlobalPadding,

@@ -1,0 +1,36 @@
+.infobox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0 10px;
+  border: 1px solid $black;
+  border-radius: 40px;
+  flex: 1;
+  padding: 5px 15px;
+  height: 62px;
+
+  &__stats {
+    line-height: 1.4;
+  }
+
+  &__points {
+    display: inline-flex;
+    align-items: flex-end;
+    font-size: 16px;
+    gap: 0 2px;
+
+    span {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    i {
+      display: inline-block;
+      font-size: 10px;
+    }
+  }
+
+  &__note {
+    font-size: 12px;
+  }
+}

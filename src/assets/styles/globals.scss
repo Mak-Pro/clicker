@@ -24,33 +24,33 @@ body {
 }
 
 body {
-  font-family: var(--font-inter);
-  font-size: 16px;
+  font-family: var(--font-worksans);
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.42;
+  line-height: 1.7;
   cursor: default;
   overflow-x: hidden;
   width: 100%;
-  max-width: 560px;
+  max-width: $maxWidth;
   min-height: $tgViewportHeight;
   color: $tgTextColor;
   background: $tgBgColor;
   overscroll-behavior: contain;
   position: relative;
   margin: 0 auto;
+  color: $black;
 }
 
 h1 {
-  font-family: var(--font-ultra);
   // @include fontType(inherit, 50px, 700, normal, 1);
 }
 
 h2 {
-  // @include fontType(inherit, 50px, 700, normal, 1);
+  @include fontType(inherit, 40px, 700, normal, 1.2);
 }
 
 h3 {
-  // @include fontType(inherit, 50px, 700, normal, 1);
+  @include fontType(inherit, 28px, 700, normal, 1.2);
 }
 
 h4 {
@@ -63,21 +63,6 @@ h5 {
 
 h6 {
   // @include fontType(inherit, 50px, 700, normal, 1);
-}
-
-.background {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: $maxWidth;
-  height: $tgViewportHeight;
-  background-image: url("/images/sky.jpg");
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: 0;
 }
 
 main {
