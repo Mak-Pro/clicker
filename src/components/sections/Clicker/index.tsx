@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTelegram } from "@/providers/telegram";
 import Lottie from "lottie-react";
@@ -25,12 +25,18 @@ export const Clicker = () => {
   const { webApp } = useTelegram();
   const [score, setScore] = useState(0);
   const [dayScore, setDayScore] = useState(totalScore);
-  const [energy, setEnergy] = useState(totalEnergy);
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
-  const [animateImage, setAnimateImage] = useState<boolean>(false);
-  const [counter, setCounter] = useState<number>(1000);
+  const [counter, setCounter] = useState<number>(totalEnergy);
   const [end, setEnd] = useState(false);
 
+  const [isTapping, setIsTapping] = useState(false);
+  const [lastTapTime, setLastTapTime] = useState(0);
+
+  // animation
+  const [currentAnimation, setCurrentAnimation] = useState("idle");
+  const animationRef = useRef<any>(null);
+
+  // touchstart
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const newTouchPoints: any = Array.from(event.changedTouches).map(
       (touch) => ({
@@ -40,7 +46,6 @@ export const Clicker = () => {
       })
     );
     setDayScore((prevScore) => prevScore - newTouchPoints.length);
-    setEnergy((prevEnergy) => prevEnergy - newTouchPoints.length);
     setTouchPoints((prevPoints) => [...prevPoints, ...newTouchPoints]);
     setScore((prevScore) => prevScore + event.changedTouches.length);
     setCounter((prevCounter) =>
@@ -48,10 +53,6 @@ export const Clicker = () => {
     );
 
     dayScore <= 1 && setEnd(true);
-
-    // Trigger image animation
-    setAnimateImage(true);
-    setTimeout(() => setAnimateImage(false), 50); // Duration of the animation
 
     setTimeout(() => {
       setTouchPoints((prevPoints) =>
@@ -63,6 +64,19 @@ export const Clicker = () => {
         )
       );
     }, 1100);
+
+    if (currentAnimation === "idle") {
+      setCurrentAnimation("start");
+    }
+  };
+
+  // touchend
+  const handleTouchEnd = () => {
+    if (currentAnimation === "idleTap" && !isTapping) {
+      animationRef.current.loop = false;
+      animationRef.current.stop();
+      setCurrentAnimation("finish");
+    }
   };
 
   useEffect(() => {
@@ -80,23 +94,9 @@ export const Clicker = () => {
       const onTouchStart = (e: TouchEvent) => {
         ts = e.touches[0].clientY;
       };
-      // const onTouchMove = (e: TouchEvent) => {
-      //   if (scrollableEl) {
-      //     const scroll = scrollableEl.scrollTop;
-      //     const te = e.changedTouches[0].clientY;
-      //     if (scroll <= 0 && ts! < te) {
-      //       e.preventDefault();
-      //     }
-      //   } else {
-      //     e.preventDefault();
-      //   }
-      // };
       document.documentElement.addEventListener("touchstart", onTouchStart, {
         passive: false,
       });
-      // document.documentElement.addEventListener("touchmove", onTouchMove, {
-      //   passive: false,
-      // });
     }
 
     const interval = setInterval(() => {
@@ -107,6 +107,70 @@ export const Clicker = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // animation
+  useEffect(() => {
+    const handleTap = () => {
+      setIsTapping(true);
+      setLastTapTime(Date.now() as number);
+    };
+
+    const handleTimeout = () => {
+      if (Date.now() - lastTapTime >= 2000) {
+        setIsTapping(false);
+      }
+    };
+
+    const tapTimeout = setInterval(handleTimeout, 10);
+
+    document.addEventListener("click", handleTap);
+
+    return () => {
+      clearInterval(tapTimeout);
+      document.removeEventListener("click", handleTap);
+    };
+  }, [lastTapTime]);
+
+  const renderAnimation = () => {
+    switch (currentAnimation) {
+      case "start":
+        return (
+          <Lottie
+            animationData={startAnimation}
+            loop={false}
+            onComplete={() => setCurrentAnimation("idleTap")}
+          />
+        );
+      case "idleTap":
+        return (
+          <Lottie
+            animationData={idleTapAnimation}
+            loop={true}
+            autoPlay={true}
+            lottieRef={animationRef}
+            onLoopComplete={() => {
+              !isTapping && setCurrentAnimation("finish");
+            }}
+          />
+        );
+      case "finish":
+        return (
+          <Lottie
+            animationData={finishAnimation}
+            loop={false}
+            autoPlay={true}
+            onComplete={() => {
+              setCurrentAnimation("idle");
+            }}
+          />
+        );
+      case "idle":
+      default:
+        return (
+          <Lottie animationData={idleAnimation} loop={true} autoPlay={true} />
+        );
+    }
+  };
 
   return (
     <>
@@ -141,15 +205,9 @@ export const Clicker = () => {
               end ? styles.clicker__action_hero_disabled : ""
             }`}
             onTouchStart={!end ? handleTouchStart : () => {}}
+            onTouchEnd={handleTouchEnd}
           >
-            <div className={styles.clicker__action_hero_inner}>
-              <motion.img
-                src="/images/jinn.svg"
-                alt="emojinn"
-                animate={animateImage ? { scale: 1.2 } : { scale: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
+            {renderAnimation()}
           </div>
           <AnimatePresence>
             {touchPoints.map((touch: TouchPoint) => (
@@ -190,26 +248,6 @@ export const Clicker = () => {
           </div>
         </div>
       </div>
-      {/* <Lottie
-        animationData={startAnimation}
-        className={styles.clicker__start_animation}
-        loop={true}
-      />
-      <Lottie
-        animationData={finishAnimation}
-        className={styles.clicker__finish_animation}
-        loop={true}
-      />
-      <Lottie
-        animationData={idleAnimation}
-        className={styles.clicker__finish_animation}
-        loop={true}
-      />
-      <Lottie
-        animationData={idleTapAnimation}
-        className={styles.clicker__finish_animation}
-        loop={true}
-      /> */}
     </>
   );
 };
