@@ -144,6 +144,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      left: -20px;
+      top: -10px;
 
       &_disabled {
         filter: grayscale(1);
