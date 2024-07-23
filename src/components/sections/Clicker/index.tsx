@@ -34,7 +34,9 @@ export const Clicker = () => {
 
   // animation
   const [currentAnimation, setCurrentAnimation] = useState("idle");
+  const startAnimationRef = useRef<any>(null);
   const animationRef = useRef<any>(null);
+  const endAnimationRef = useRef<any>(null);
 
   // touchstart
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -120,7 +122,7 @@ export const Clicker = () => {
     };
 
     const handleTimeout = () => {
-      if (Date.now() - lastTapTime >= 2000) {
+      if (Date.now() - lastTapTime >= 500) {
         setIsTapping(false);
       }
     };
@@ -145,6 +147,10 @@ export const Clicker = () => {
             animationData={startAnimation}
             loop={false}
             onComplete={() => setCurrentAnimation("idleTap")}
+            lottieRef={startAnimationRef}
+            onDOMLoaded={() => {
+              startAnimationRef.current.setSpeed(3);
+            }}
           />
         );
       case "idleTap":
@@ -157,6 +163,9 @@ export const Clicker = () => {
             onLoopComplete={() => {
               !isTapping && setCurrentAnimation("finish");
             }}
+            onDOMLoaded={() => {
+              animationRef.current.setSpeed(3);
+            }}
           />
         );
       case "finish":
@@ -165,8 +174,12 @@ export const Clicker = () => {
             animationData={finishAnimation}
             loop={false}
             autoPlay={true}
+            lottieRef={endAnimationRef}
             onComplete={() => {
               setCurrentAnimation("idle");
+            }}
+            onDOMLoaded={() => {
+              animationRef.current.setSpeed(3);
             }}
           />
         );
@@ -206,11 +219,6 @@ export const Clicker = () => {
           <span>{score} Coins</span>
         </div>
         <div className={styles.clicker__action}>
-          {/* {isTapping ? (
-            <p>Тапанье продолжается...</p>
-          ) : (
-            <p>Тапанье прекратилось</p>
-          )} */}
           <div
             className={`${styles.clicker__action_hero} ${
               end ? styles.clicker__action_hero_disabled : ""
