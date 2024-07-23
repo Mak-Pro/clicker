@@ -206,11 +206,11 @@ export const Clicker = () => {
           <span>{score} Coins</span>
         </div>
         <div className={styles.clicker__action}>
-          {isTapping ? (
+          {/* {isTapping ? (
             <p>Тапанье продолжается...</p>
           ) : (
             <p>Тапанье прекратилось</p>
-          )}
+          )} */}
           <div
             className={`${styles.clicker__action_hero} ${
               end ? styles.clicker__action_hero_disabled : ""
