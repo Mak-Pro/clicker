@@ -1,13 +1,9 @@
 "use client";
-import { useEffect, useContext, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { useTelegram } from "@/providers/telegram";
-import AppContext from "@/providers/context";
 
 export default function Template({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   const { webApp } = useTelegram();
-  const { isLogined } = useContext(AppContext);
 
   useEffect(() => {
     webApp?.ready();

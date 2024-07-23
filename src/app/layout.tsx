@@ -13,6 +13,9 @@ const workSans = Work_Sans({
 export const metadata: Metadata = {
   title: "Emojinn",
   description: "Emojinn bot App",
+  viewport: {
+    userScalable: false,
+  },
 };
 
 export default function RootLayout({
