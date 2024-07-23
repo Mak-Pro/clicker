@@ -1,6 +1,7 @@
 import "@/assets/styles/globals.scss";
 import { Providers } from "@/providers";
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 import { Work_Sans } from "next/font/google";
 
 const workSans = Work_Sans({
@@ -13,13 +14,13 @@ const workSans = Work_Sans({
 export const metadata: Metadata = {
   title: "Emojinn",
   description: "Emojinn bot App",
-  viewport: {
-    userScalable: false,
-    initialScale: 1,
-    width: "device-width",
-    maximumScale: 1,
-    viewportFit: "contain",
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  userScalable: false,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
