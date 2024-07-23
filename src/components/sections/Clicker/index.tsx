@@ -110,9 +110,13 @@ export const Clicker = () => {
 
   // animation
   useEffect(() => {
-    const handleTap = () => {
+    const handleTapStart = () => {
       setIsTapping(true);
       setLastTapTime(Date.now() as number);
+    };
+
+    const handleTapEnd = () => {
+      setLastTapTime(Date.now());
     };
 
     const handleTimeout = () => {
@@ -121,13 +125,15 @@ export const Clicker = () => {
       }
     };
 
-    const tapTimeout = setInterval(handleTimeout, 10);
+    const tapTimeout = setInterval(handleTimeout, 200);
 
-    document.addEventListener("click", handleTap);
+    document.addEventListener("touchstart", handleTapStart);
+    document.addEventListener("touchend", handleTapEnd);
 
     return () => {
       clearInterval(tapTimeout);
-      document.removeEventListener("click", handleTap);
+      document.removeEventListener("touchstart", handleTapStart);
+      document.removeEventListener("touchend", handleTapEnd);
     };
   }, [lastTapTime]);
 
@@ -200,6 +206,11 @@ export const Clicker = () => {
           <span>{score} Coins</span>
         </div>
         <div className={styles.clicker__action}>
+          {isTapping ? (
+            <p>Тапанье продолжается...</p>
+          ) : (
+            <p>Тапанье прекратилось</p>
+          )}
           <div
             className={`${styles.clicker__action_hero} ${
               end ? styles.clicker__action_hero_disabled : ""
