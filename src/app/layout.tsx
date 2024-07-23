@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description: "Emojinn bot App",
   viewport: {
     userScalable: false,
+    initialScale: 1,
+    width: "device-width",
+    maximumScale: 1,
+    viewportFit: "contain",
   },
 };
 
