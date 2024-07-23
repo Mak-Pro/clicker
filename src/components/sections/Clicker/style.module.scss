@@ -5,6 +5,9 @@
   justify-content: center;
   align-items: center;
   height: $tgViewportHeight;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+  min-height: -moz-available;
   user-select: none;
   touch-action: manipulation;
   background-color: $green;
