@@ -38,6 +38,13 @@ export const Clicker = () => {
   const animationRef = useRef<any>(null);
   const endAnimationRef = useRef<any>(null);
 
+
+
+  // window
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [initialHeight, setInitialHeight] = useState(window.innerHeight);
+
   // touchstart
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const newTouchPoints: any = Array.from(event.changedTouches).map(
@@ -80,6 +87,34 @@ export const Clicker = () => {
       setCurrentAnimation("finish");
     }
   };
+
+
+  
+
+  useEffect(() => {
+    const handleResize = () => {
+      const currentHeight = window.innerHeight;
+
+      if (currentHeight < initialHeight) {
+        setIsKeyboardOpen(true); // Клавиатура открыта
+      } else {
+        setIsKeyboardOpen(false); // Клавиатура закрыта
+      }
+
+      setWindowHeight(currentHeight);
+    };
+
+    // Установить исходную высоту окна при загрузке компонента
+    setInitialHeight(window.innerHeight);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [initialHeight]);
+
+  
 
   useEffect(() => {
     webApp?.ready();
