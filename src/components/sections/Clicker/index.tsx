@@ -41,9 +41,9 @@ export const Clicker = () => {
 
 
   // window
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [windowHeight, setWindowHeight] = useState(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const [initialHeight, setInitialHeight] = useState(window.innerHeight);
+  const [initialHeight, setInitialHeight] = useState(0);
 
   // touchstart
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -92,22 +92,30 @@ export const Clicker = () => {
   
 
   useEffect(() => {
-    const handleResize = () => {
+
+    if(typeof window !== undefined) {
+      
+
+      const handleResize = () => {
       const currentHeight = window.innerHeight;
 
       if (currentHeight < initialHeight) {
-        setIsKeyboardOpen(true); // Клавиатура открыта
-      } else {
-        setIsKeyboardOpen(false); // Клавиатура закрыта
-      }
-
-      setWindowHeight(currentHeight);
-    };
-
-    // Установить исходную высоту окна при загрузке компонента
-    setInitialHeight(window.innerHeight);
-
-    window.addEventListener('resize', handleResize);
+          setIsKeyboardOpen(true); // Клавиатура открыта
+        } else {
+          setIsKeyboardOpen(false); // Клавиатура закрыта
+        }
+  
+        setWindowHeight(currentHeight);
+      };
+  
+      // Установить исходную высоту окна при загрузке компонента
+      setWindowHeight(window.innerHeight);
+      setInitialHeight(window.innerHeight);
+  
+      window.addEventListener('resize', handleResize);
+    }
+    
+    
 
     return () => {
       window.removeEventListener('resize', handleResize);
