@@ -60,16 +60,7 @@ app/
 ├── providers/ # Global context, telegram
 └── types/ # All components types
 
-src/
-├── components/ # React components
-├── pages/ # Next.js pages
-├── styles/ # Stylesheets (SASS/SCSS)
-├── hooks/ # Custom hooks
-├── context/ # React context providers
-├── services/ # API interaction logic
-└── utils/ # Utility functions
-
-    .
+    app/
     ├── build                   # Compiled files (alternatively `dist`)
     ├── docs                    # Documentation files (alternatively `doc`)
     ├── src                     # Source files (alternatively `lib` or `app`)
