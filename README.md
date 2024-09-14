@@ -47,31 +47,18 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Project structure
 
-app/
-├──public/ # All icons and images
-├──certificates/ # For https protocol
-├──src/
-├── api/ # Api functions
-├── app/ # All pages
-├── assets/ # All global scss styles, json files for Lottie, static avatar image file
-├── components/ # React components
-├── helpers/ # React helper functions
-├── hooks/ # Custom hooks
-├── providers/ # Global context, telegram
-└── types/ # All components types
-
     app/
-    ├──public/                  # All icons and images
-    ├──certificates/            # For https protocol
+    ├──public/              # All icons and images
+    ├──certificates/        # For https protocol
     ├──src/
-    ├── api/                    # Api functions
-    ├── app/                    # All pages
-    ├── assets/                 # All global scss styles, json files for Lottie, static avatar image file
-    ├── components/             # React components
-    ├── helpers/                # React helper functions
-    ├── hooks/                  # Custom hooks
-    ├── providers/              # Global context, telegram
-    └── types/                  # All components types
+    ├── api/                # Api functions
+    ├── app/                # All pages
+    ├── assets/             # All global scss styles, json files for Lottie, static avatar image file
+    ├── components/         # React components
+    ├── helpers/            # React helper functions
+    ├── hooks/              # Custom hooks
+    ├── providers/          # Global context, telegram
+    └── types/              # All components types
 
 All variables that concern the API (dev environment and prod environment) are in the .env file
 
