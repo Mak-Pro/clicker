@@ -69,6 +69,15 @@ src/
 ├── services/ # API interaction logic
 └── utils/ # Utility functions
 
+    .
+    ├── build                   # Compiled files (alternatively `dist`)
+    ├── docs                    # Documentation files (alternatively `doc`)
+    ├── src                     # Source files (alternatively `lib` or `app`)
+    ├── test                    # Automated tests (alternatively `spec` or `tests`)
+    ├── tools                   # Tools and utilities
+    ├── LICENSE
+    └── README.md
+
 All variables that concern the API (dev environment and prod environment) are in the .env file
 
 All global settings are specified in the next.config.mjs file
