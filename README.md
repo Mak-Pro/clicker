@@ -61,13 +61,17 @@ app/
 └── types/ # All components types
 
     app/
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
+    ├──public/                  # All icons and images
+    ├──certificates/            # For https protocol
+    ├──src/
+    ├── api/                    # Api functions
+    ├── app/                    # All pages
+    ├── assets/                 # All global scss styles, json files for Lottie, static avatar image file
+    ├── components/             # React components
+    ├── helpers/                # React helper functions
+    ├── hooks/                  # Custom hooks
+    ├── providers/              # Global context, telegram
+    └── types/                  # All components types
 
 All variables that concern the API (dev environment and prod environment) are in the .env file
 
