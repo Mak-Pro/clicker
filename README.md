@@ -1,3 +1,5 @@
+// prettier-ignore
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Technologies
@@ -57,6 +59,15 @@ app/
 ├── hooks/ # Custom hooks
 ├── providers/ # Global context, telegram
 └── types/ # All components types
+
+src/
+├── components/ # React components
+├── pages/ # Next.js pages
+├── styles/ # Stylesheets (SASS/SCSS)
+├── hooks/ # Custom hooks
+├── context/ # React context providers
+├── services/ # API interaction logic
+└── utils/ # Utility functions
 
 All variables that concern the API (dev environment and prod environment) are in the .env file
 
