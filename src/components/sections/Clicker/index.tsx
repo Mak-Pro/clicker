@@ -38,8 +38,6 @@ export const Clicker = () => {
   const animationRef = useRef<any>(null);
   const endAnimationRef = useRef<any>(null);
 
-
-
   // window
   const [windowHeight, setWindowHeight] = useState(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -88,41 +86,31 @@ export const Clicker = () => {
     }
   };
 
-
-  
-
   useEffect(() => {
-
-    if(typeof window !== undefined) {
-      
-
-      const handleResize = () => {
+    const handleResize = () => {
       const currentHeight = window.innerHeight;
 
       if (currentHeight < initialHeight) {
-          setIsKeyboardOpen(true); // Клавиатура открыта
-        } else {
-          setIsKeyboardOpen(false); // Клавиатура закрыта
-        }
-  
-        setWindowHeight(currentHeight);
-      };
-  
+        setIsKeyboardOpen(true); // Клавиатура открыта
+      } else {
+        setIsKeyboardOpen(false); // Клавиатура закрыта
+      }
+
+      setWindowHeight(currentHeight);
+    };
+
+    if (typeof window !== undefined) {
       // Установить исходную высоту окна при загрузке компонента
       setWindowHeight(window.innerHeight);
       setInitialHeight(window.innerHeight);
-  
-      window.addEventListener('resize', handleResize);
+
+      window.addEventListener("resize", handleResize);
     }
-    
-    
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [initialHeight]);
-
-  
 
   useEffect(() => {
     webApp?.ready();

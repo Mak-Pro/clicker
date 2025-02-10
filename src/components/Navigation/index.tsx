@@ -19,7 +19,6 @@ export const Navigation = () => {
 
   return (
     <nav className={styles.nav}>
-      <input type="text"/>
       {navigationItems.map((item) => (
         <div
           key={item.text}
